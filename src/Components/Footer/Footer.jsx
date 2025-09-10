@@ -8,11 +8,11 @@ const Footer = () => {
       <div className="max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 border-b border-gray-700 pb-8">
         {/* Column 1 - About */}
         <div>
-          <h2 className="text-3xl font-extrabold mb-2">
+          <h2 className="text-4xl font-extrabold mb-2">
             News<span className="text-red-500">365.</span>
           </h2>
           <p className="text-sm mt-2 mb-4">
-            BDTASK © 2022. All Rights Reserved.
+            BDTASK © 2025. All Rights Reserved.
           </p>
           <p className="text-sm leading-relaxed">
             الشارع مع شارع النخيل، مبنى رقم 12، الطابق الثالث

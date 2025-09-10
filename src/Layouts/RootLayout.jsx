@@ -7,7 +7,7 @@ import Header from "../Components/Header/Header";
 const RootLayout = () => {
   return (
     <div className="">
-      <header>
+      <header className= "sticky top-0 right-0 left-0 z-50">
         <div className="bg-[#010F83]">
           <nav className="max-w-[1700px]  mx-auto">
             <Navbar></Navbar>
