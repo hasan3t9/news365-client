@@ -15,7 +15,23 @@ const Home = () => {
             <Entertainment></Entertainment>
             <Politics></Politics>
           </div>
-          <aside className="h-auto w-[20%] bg-pink-200">frf</aside>
+          <aside className="h-auto w-[20%] flex flex-col gap-10">
+            <img
+              src="https://i.ibb.co.com/Mkzqyt7v/1753869992654.webp
+          "
+              alt=""
+            />
+            <img
+              src="https://i.ibb.co.com/PzQtDJRB/1753869839465.webp
+          "
+              alt=""
+            />
+            <img
+              src="https://i.ibb.co.com/Mkzqyt7v/1753869992654.webp
+          "
+              alt=""
+            />
+          </aside>
         </div>
         <Business></Business>
         <Science></Science>

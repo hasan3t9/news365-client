@@ -14,11 +14,27 @@ const Navbar = () => {
 
   const navLink = (
     <>
+      <li>
+        <NavLink
+          to={`/`}
+          className={({ isActive }) =>
+            isActive
+              ? "border-b-2 border-white text-lg uppercase font-semibold transition duration-200"
+              : "text-lg uppercase font-semibold hover:border-b-2 hover:border-white transition duration-200"
+          }
+        >
+          All-News
+        </NavLink>
+      </li>
       {categories.map((category) => (
         <li key={category.id}>
           <NavLink
-            className={"text-lg font-semibold uppercase"}
             to={`/category/${category.id}`}
+            className={({ isActive }) =>
+              isActive
+                ? "border-b-2 border-white text-lg uppercase font-semibold transition duration-200"
+                : "text-lg uppercase font-semibold hover:border-b-2 hover:border-white transition duration-200"
+            }
           >
             {category.name}
           </NavLink>
@@ -31,7 +47,11 @@ const Navbar = () => {
       <div className="navbar ">
         <div className="navbar-start">
           <div className="dropdown">
-            <div tabIndex={0} role="button" className="btn text-white btn-ghost lg:hidden">
+            <div
+              tabIndex={0}
+              role="button"
+              className="btn text-white btn-ghost lg:hidden"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5"
