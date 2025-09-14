@@ -15,6 +15,9 @@ import NewsDetails from "../Pages/NewsDetails/NewsDetails";
 import LoginForm from "../Pages/Authentication/Login";
 import Login from "../Pages/Authentication/Login";
 import Register from "../Pages/Authentication/Register";
+import DashLayout from "../Layouts/DashLayout";
+import DashboardHome from "../Pages/Dashboard/DashHome/DashHome";
+import AddPost from "../Pages/Dashboard/Admin/AddPost";
 
 const router = createBrowserRouter([
   {
@@ -65,20 +68,34 @@ const router = createBrowserRouter([
         path: "/category/10",
         Component: LifestyleNews,
       },
-      // {
-      //   path: "/login",
-      //   Component: Login,
-      // },
-      // {
-      //   path: "/register",
-      //   Component: Register,
-      // },
+      {
+        path: "/login",
+        Component: Login,
+      },
+      {
+        path: "/register",
+        Component: Register,
+      },
       {
         path: "/category/:id",
 
         Component: NewsDetails,
         loader: ({ params }) =>
           fetch(`http://localhost:3000/all-news/${params.id}`),
+      },
+    ],
+  },
+  {
+    path: "/dashboard",
+    element: <DashLayout></DashLayout>,
+    children: [
+      {
+        index: true,
+        element: <DashboardHome></DashboardHome>,
+      },
+      {
+        path: "/dashboard/add-post",
+        element: <AddPost></AddPost>,
       },
     ],
   },

@@ -1,18 +1,11 @@
 import React, { useContext, useState } from "react";
 import { motion } from "framer-motion";
 import { FaUser, FaEnvelope, FaPhone, FaLock, FaImage } from "react-icons/fa";
-
-import { useNavigate } from "react-router";
-import Swal from "sweetalert2";
-
-import axiosInstance from "../../Hook/useAxios";
-import { toast } from "react-toastify";
 import AuthContext from "../../Provider/AuthContext";
+import axiosInstance from "../../Hook/useAxios";
 
 const Register = () => {
-  const { createUser, updateUser, verifyUser, LogOutUser } =
-    useContext(AuthContext);
-  const navigate = useNavigate();
+  const { createUser, verifyUser, LogOutUser ,updateUser} = useContext(AuthContext);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -25,15 +18,10 @@ const Register = () => {
   const [imagePreview, setImagePreview] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Handle input changes
   const handleChange = (e) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  // Handle image input change
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (!file) {
@@ -45,20 +33,15 @@ const Register = () => {
     setImagePreview(URL.createObjectURL(file));
   };
 
-  // Register handler
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!formData.name || !formData.email || !formData.password) {
-      Swal.fire("Error", "Please fill in all required fields", "error");
-      return;
-    }
 
     setLoading(true);
 
     try {
-      // 1. Upload image if present
+      // 1. Upload image to Cloudinary if exists
       let imageUrl = "";
+
       if (image) {
         const data = new FormData();
         data.append("file", image);
@@ -77,57 +60,55 @@ const Register = () => {
         if (imgData.secure_url) {
           imageUrl = imgData.secure_url;
         } else {
-          throw new Error("Failed to upload image.");
+          throw new Error("Image upload failed.");
         }
       }
 
-      // 2. Create user with Firebase Auth
-      await createUser(formData.email, formData.password);
+      // 2. Create Firebase user
+      const userCredential = await createUser(
+        formData.email,
+        formData.password
+      );
 
-      // 3. Update user profile
       await updateUser({
         displayName: formData.name,
-        photoURL: imageUrl || "",
+        photoURL: imageUrl,
       });
 
-      // 4. Send verification email
-      await verifyUser();
-
-      // 5. Add user info to your backend/database
-      const newUser = {
+      // 3. Prepare user data to send to backend
+      const userData = {
+        uid: userCredential.user.uid,
         name: formData.name,
         email: formData.email,
-        photo: imageUrl || "",
-        phone_num: formData.phone_num || "",
+        phone_num: formData.phone_num,
+        photo: imageUrl,
         role: "user",
       };
 
-      // Use axios or fetch to post to your backend
-      const response = await axiosInstance.post("/users", newUser);
+      // 4. Send user data to your backend
+      await axiosInstance.post("/users", userData);
 
-      if (response.data.insertedId) {
-        toast.success("User data saved to database!");
-      } else {
-        throw new Error("Failed to save user data.");
-      }
+      // 5. Send email verification
+      await verifyUser();
 
+      // 6. Logout user
       await LogOutUser();
 
-      Swal.fire({
-        icon: "success",
-        title: "Account created!",
-        text: "Verification email sent. Please verify before login.",
-      });
+      alert(
+        "Registration successful! Please check your email for verification before logging in."
+      );
 
-      navigate("/login");
+      // Optionally reset form
+      setFormData({ name: "", email: "", phone_num: "", password: "" });
+      setImage(null);
+      setImagePreview("");
     } catch (error) {
       console.error("Registration error:", error);
-      Swal.fire("Error", error.message || "Registration failed", "error");
+      alert(error.message || "Registration failed.");
     } finally {
       setLoading(false);
     }
   };
-
   return (
     <div className="min-h-screen bg-white flex items-center justify-center px-4">
       <motion.div
@@ -230,19 +211,9 @@ const Register = () => {
               loading ? "opacity-50 cursor-not-allowed" : "hover:bg-indigo-700"
             }`}
           >
-            {loading ? "Registering..." : "Register"}
+            {loading ? "Uploading..." : "Submit"}
           </motion.button>
         </form>
-
-        <p className="text-gray-600 text-center mt-6 text-sm">
-          Already have an account?{" "}
-          <a
-            href="/login"
-            className="text-indigo-600 underline hover:text-indigo-800"
-          >
-            Sign in
-          </a>
-        </p>
       </motion.div>
     </div>
   );
