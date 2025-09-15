@@ -30,10 +30,10 @@ const Hero = () => {
             {/* <div className="hero-overlay"></div> */}
             <div className="self-end justify-self-start">
               <div className="flex flex-col text-white p-5 ">
-                <h1 className="text-2xl bg-black p-2 w-max truncate  rounded-xl">
+                <h1 className="text-lg bg-black p-1 w-max truncate  rounded-xl">
                   {business?.category_name}
                 </h1>
-                <p className="text-2xl bg-black py-2 px-3 w-max max-w-xs truncate rounded-2xl font-bold mt-3">
+                <p className="text-xl bg-black py-2 px-3 w-max max-w-xs truncate rounded-2xl font-bold mt-3">
                   {business?.title}
                 </p>
               </div>
@@ -55,10 +55,10 @@ const Hero = () => {
             {/* <div className="hero-overlay"></div> */}
             <div className="self-end justify-self-start">
               <div className="flex flex-col text-white p-5 ">
-                <h1 className="text-2xl   bg-black p-2 w-max  truncate rounded-xl">
+                <h1 className="text-lg   bg-black p-1 w-max  truncate rounded-xl">
                   {technology?.category_name}
                 </h1>
-                <p className="text-2xl bg-black py-2 px-3 max-w-xs w-max truncate rounded-2xl font-bold mt-3">
+                <p className="text-xl bg-black py-2 px-3 max-w-xs w-max truncate rounded-2xl font-bold mt-3">
                   {technology?.title}
                 </p>
               </div>
@@ -78,10 +78,10 @@ const Hero = () => {
               {/* <div className="hero-overlay"></div> */}
               <div className="self-end justify-self-start">
                 <div className="flex flex-col text-white p-5 ">
-                  <h1 className="text-xl bg-black p-2 w-max max-w-xs truncate rounded-xl">
+                  <h1 className="text-lg bg-black p-1 w-max max-w-xs truncate rounded-xl">
                     {health?.category_name}
                   </h1>
-                  <p className="text-2xl bg-black py-2 px-3 max-w-xs truncate rounded-2xl font-bold mt-3">
+                  <p className="text-xl bg-black py-2 px-3 max-w-xs truncate rounded-2xl font-bold mt-3">
                     {health?.title}
                   </p>
                 </div>
@@ -98,10 +98,10 @@ const Hero = () => {
               {/* <div className="hero-overlay"></div> */}
               <div className="self-end justify-self-start">
                 <div className="flex flex-col text-white p-5 ">
-                  <h1 className="text-xl bg-black p-2 w-max rounded-xl">
+                  <h1 className="text-lg bg-black p-1 w-max rounded-xl">
                     {sport?.category_name}
                   </h1>
-                  <p className="text-2xl bg-black py-2 px-3 max-w-xs truncate rounded-2xl font-bold mt-3">
+                  <p className="text-xl bg-black py-2 px-3 max-w-xs truncate rounded-2xl font-bold mt-3">
                     {sport?.title}
                   </p>
                 </div>

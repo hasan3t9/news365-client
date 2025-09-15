@@ -11,11 +11,11 @@ const Home = () => {
       <Hero></Hero>
       <div>
         <div className="flex flex-col lg:flex-row mt-10 gap-5">
-          <div className="h-auto w-[80%] ">
+          <div className="h-auto w-full md:w-[80%] mx-auto ">
             <Entertainment></Entertainment>
             <Politics></Politics>
           </div>
-          <aside className="h-auto w-[20%] flex flex-col gap-10">
+          <aside className="h-auto w-full md:w-[20%] mb-20 md:mb-0 flex px-3 flex-col gap-10">
             <img
               src="https://i.ibb.co.com/Mkzqyt7v/1753869992654.webp
           "

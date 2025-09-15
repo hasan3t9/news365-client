@@ -40,6 +40,18 @@ const Navbar = () => {
           </NavLink>
         </li>
       ))}
+      <li>
+        <NavLink
+          to={`/dashboard`}
+          className={({ isActive }) =>
+            isActive
+              ? "border-b-2 border-white text-lg uppercase font-semibold transition duration-200"
+              : "text-lg uppercase font-semibold hover:border-b-2 hover:border-white transition duration-200"
+          }
+        >
+          Dashboard
+        </NavLink>
+      </li>
     </>
   );
   return (

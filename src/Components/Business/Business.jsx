@@ -13,8 +13,8 @@ const Business = () => {
   }, []);
   return (
     <div className="mb-20">
-      <div className="flex items-center justify-between">
-        <h1 className="uppercase text-2xl font-bold w-max mb-10 border-b-3">
+      <div className="flex items-center px-3 mb-10 md:px-0 justify-between">
+        <h1 className="uppercase text-2xl font-bold w-max mb-0   border-b-3">
           Business
         </h1>
         <Link to={"/category/2"}>
@@ -23,7 +23,7 @@ const Business = () => {
       </div>
       <div className="">
         <div className="h-auto w-full ">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 px-3">
             {business.map((ent) => (
               <div
                 onClick={() => navigate(`/category/${ent.id}`)}

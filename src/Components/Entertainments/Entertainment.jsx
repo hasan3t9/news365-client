@@ -12,9 +12,9 @@ const Entertainment = () => {
     });
   }, []);
   return (
-    <div className="mb-20">
-      <div className="flex items-center justify-between">
-        <h1 className="uppercase text-2xl font-bold w-max mb-10 border-b-3">
+    <div className="mb-20 px-3 md:px-0">
+      <div className="flex items-center mb-10  justify-between">
+        <h1 className="uppercase text-2xl font-bold w-max border-b-3">
           Entertainment
         </h1>
         <Link to={"/category/6"}>

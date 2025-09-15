@@ -13,8 +13,8 @@ const Science = () => {
   }, []);
   return (
     <div className="mb-20">
-      <div className="flex items-center justify-between">
-        <h1 className="uppercase text-2xl font-bold w-max mb-10 border-b-3">
+      <div className="flex items-center mb-10 px-3 justify-between">
+        <h1 className="uppercase text-2xl font-bold w-max  border-b-3">
           Science
         </h1>
         <Link to={"/category/7"}>
@@ -23,7 +23,7 @@ const Science = () => {
       </div>
       <div className="">
         <div className="h-auto w-full ">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 px-3">
             {science.map((ent) => (
               <div
                 onClick={() => navigate(`/category/${ent.id}`)}

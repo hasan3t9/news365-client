@@ -18,6 +18,8 @@ import Register from "../Pages/Authentication/Register";
 import DashLayout from "../Layouts/DashLayout";
 import DashboardHome from "../Pages/Dashboard/DashHome/DashHome";
 import AddPost from "../Pages/Dashboard/Admin/AddPost";
+import PostList from "../Pages/Dashboard/Admin/PostList";
+import EditPost from "../Pages/Dashboard/Admin/EditPost";
 
 const router = createBrowserRouter([
   {
@@ -96,6 +98,14 @@ const router = createBrowserRouter([
       {
         path: "/dashboard/add-post",
         element: <AddPost></AddPost>,
+      },
+      {
+        path: "/dashboard/post-list",
+        element: <PostList></PostList>,
+      },
+      {
+        path: "/dashboard/edit-post/:id",
+        element: <EditPost></EditPost>,
       },
     ],
   },

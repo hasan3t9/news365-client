@@ -3,9 +3,17 @@ import { NavLink, Outlet, useNavigate } from "react-router";
 // import useUserRole from "../hooks/useUserRole";
 import { AiFillHome } from "react-icons/ai";
 import { BsFileEarmarkText } from "react-icons/bs";
-import { FaListAlt, FaMoneyCheckAlt, FaRegListAlt } from "react-icons/fa";
+import { MdArticle } from "react-icons/md";
+import {
+  FaListAlt,
+  FaMoneyCheckAlt,
+  FaPlusCircle,
+  
+ 
+} from "react-icons/fa";
 
 import useUserRole from "../Hook/useUserRole";
+import { ToastContainer } from "react-toastify";
 
 const DashLayout = () => {
   const navigate = useNavigate();
@@ -29,6 +37,7 @@ const DashLayout = () => {
 
   return (
     <div className="drawer lg:drawer-open">
+      <ToastContainer />
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
 
       {/* MAIN CONTENT */}
@@ -56,7 +65,7 @@ const DashLayout = () => {
         </div>
 
         {/* Routed Page Content */}
-        <div className="p-4">
+        <div className="p-4 ">
           <Outlet />
         </div>
       </div>
@@ -97,7 +106,8 @@ const DashLayout = () => {
                   }
                   to="/dashboard/add-post"
                 >
-                  <BsFileEarmarkText size={20} />....
+                  <BsFileEarmarkText size={20} />
+                  ....
                 </NavLink>
               </li>
               <li className="font-bold">
@@ -118,20 +128,36 @@ const DashLayout = () => {
               <div>
                 <div onClick={() => toggleSection("post")}>
                   <li className="font-bold">
-                    <NavLink>
-                      <FaListAlt size={20} /> Post
-                    </NavLink>
+                    <p>
+                      <MdArticle size={20}  /> Post
+                    </p>
                   </li>
                 </div>
                 {openSection === "post" && (
                   <ul className="ml-6 mt-2 space-y-1 font-bold  ">
                     <li>
                       {" "}
-                      <NavLink to={"/dashboard/add-post"}>Add Post</NavLink>
+                      <NavLink
+                        className={({ isActive }) =>
+                          isActive ? "text-blue-500 " : ""
+                        }
+                        to={"/dashboard/add-post"}
+                      >
+                        <FaPlusCircle size={20} />
+                        Add Post
+                      </NavLink>
                     </li>
                     <li>
                       {" "}
-                      <NavLink>Post List</NavLink>
+                      <NavLink
+                        className={({ isActive }) =>
+                          isActive ? "text-blue-500 " : ""
+                        }
+                        to={"/dashboard/post-list"}
+                      >
+                        <FaListAlt size={20} />
+                        Post List
+                      </NavLink>
                     </li>
                   </ul>
                 )}

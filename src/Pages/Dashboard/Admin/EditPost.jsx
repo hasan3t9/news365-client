@@ -1,22 +1,24 @@
-import React, { useContext, useState } from "react";
-import axiosInstance from "../../../Hook/useAxios";
-import Swal from "sweetalert2";
+import React, { useContext, useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router";
 import AuthContext from "../../../Provider/AuthContext";
+import axiosInstance from "../../../Hook/useAxios";
+import { toast, ToastContainer } from "react-toastify";
+import Swal from "sweetalert2";
 
-const AddPost = () => {
+const EditPost = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
   const { user } = useContext(AuthContext);
-  console.log(user.displayName);
+
   const [formData, setFormData] = useState({
     id: "",
     category_id: "",
+    category_name: "",
     title: "",
-    rating: {
-      number: "",
-      badge: "",
-    },
+    rating: { number: "", badge: "" },
     total_view: "",
     author: {
-      name: `${user?.displayName}`,
+      name: user?.displayName || "",
       published_date: "",
       img: "",
     },
@@ -29,122 +31,111 @@ const AddPost = () => {
       is_trending: false,
     },
     production: false,
-    category_name: "",
   });
 
+  // Load existing post data
+  useEffect(() => {
+    axiosInstance
+      .get(`/all-news/${id}`)
+      .then((res) => {
+        if (res.data.length === 0) {
+          alert("Post not found");
+          return navigate("/dashboard/post-list");
+        }
+        const existingPost = res.data[0];
+
+        setFormData({
+          ...existingPost,
+          rating: {
+            number: existingPost.rating?.number || 0,
+            badge: existingPost.rating?.badge || "",
+          },
+          author: {
+            name: existingPost.author?.name || "",
+            published_date: existingPost.author?.published_date
+              ? existingPost.author.published_date.split("T")[0]
+              : "",
+            img: existingPost.author?.img || "",
+          },
+          others: {
+            is_today_pick: existingPost.others?.is_today_pick || false,
+            is_trending: existingPost.others?.is_trending || false,
+          },
+          tags: existingPost.tags || "",
+          production: existingPost.production || false,
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+        alert("Failed to load post data");
+      });
+  }, [id, navigate, user]);
+
+  // Handle form input changes
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
 
-    if (name.includes("rating.")) {
-      const key = name.split(".")[1];
+    if (name.includes(".")) {
+      const [parent, child] = name.split(".");
       setFormData((prev) => ({
         ...prev,
-        rating: {
-          ...prev.rating,
-          [key]: key === "number" ? Number(value) : value,
+        [parent]: {
+          ...prev[parent],
+          [child]: type === "checkbox" ? checked : value,
         },
-      }));
-    } else if (name.includes("author.")) {
-      const key = name.split(".")[1];
-      setFormData((prev) => ({
-        ...prev,
-        author: {
-          ...prev.author,
-          [key]: value,
-        },
-      }));
-    } else if (name.includes("others.")) {
-      const key = name.split(".")[1];
-      setFormData((prev) => ({
-        ...prev,
-        others: {
-          ...prev.others,
-          [key]: checked,
-        },
-      }));
-    } else if (type === "checkbox") {
-      setFormData((prev) => ({
-        ...prev,
-        [name]: checked,
       }));
     } else {
       setFormData((prev) => ({
         ...prev,
-        [name]: value,
+        [name]: type === "checkbox" ? checked : value,
       }));
     }
   };
 
+  // Handle form submit
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const tagsArray = formData.tags
-      .split(",")
-      .map((tag) => tag.trim())
-      .filter(Boolean);
-
-    const finalData = {
+    const dataToSend = {
       ...formData,
+      tags:
+        typeof formData.tags === "string"
+          ? formData.tags
+              .split(",")
+              .map((tag) => tag.trim())
+              .filter(Boolean)
+          : formData.tags,
       category_id: Number(formData.category_id),
-      total_view: Number(formData.total_view),
-      tags: tagsArray,
-      rating: {
-        number: Number(formData.rating.number),
-        badge: formData.rating.badge,
-      },
-      author: {
-        ...formData.author,
-        published_date: formData.author.published_date,
-      },
-      production: Boolean(formData.production),
     };
 
     axiosInstance
-      .post("/all-news", finalData)
-      .then(() => {
-        Swal.fire({
-          icon: "success",
-          title: "Post Created!",
-          text: "Your post was submitted successfully.",
-          confirmButtonColor: "#6366f1",
-        });
-
-        // Reset the form
-        setFormData({
-          id: "",
-          category_id: "",
-          title: "",
-          rating: { number: "", badge: "" },
-          total_view: "",
-          author: { name: `${user?.displayName}`, published_date: "", img: "" },
-          thumbnail_url: "",
-          image_url: "",
-          details: "",
-          tags: "",
-          others: { is_today_pick: false, is_trending: false },
-          production: false,
-          category_name: "",
-        });
+      .put(`/update-news/${id}`, dataToSend)
+      .then((res) => {
+        if (res.data.modifiedCount > 0) {
+          Swal.fire({
+            icon: "success",
+            title: "Updated!",
+            text: "Post updated successfully!",
+            timer: 2000,
+            showConfirmButton: false,
+          });
+        //   toast.success("Post updated successfully!");
+          navigate("/dashboard/post-list");
+        } else {
+          toast.info("No changes detected.");
+        }
       })
       .catch((error) => {
-        console.error("Error submitting post:", error);
-
-        Swal.fire({
-          icon: "error",
-          title: "Submission Failed",
-          text: "Something went wrong. Please try again later.",
-          confirmButtonColor: "#ef4444",
-        });
+        console.error(error);
+        toast.error("Failed to update post.");
       });
   };
 
   return (
-    <div className=" mx-auto p-6 lg:mt-20 bg-white shadow-lg rounded-md animate-fade-in">
-      <h2 className="text-3xl font-bold text-center mb-6 text-indigo-700">
-        Create a New Post
-      </h2>
+    <div className="max-w-6xl mx-auto px-4 py-10">
+      <h2 className="text-2xl font-bold mb-6">Edit Post</h2>
+
       <form onSubmit={handleSubmit} className="space-y-5">
-        {/* Post ID */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 ">
           <div>
             <label className="block font-semibold text-gray-700 mb-1">
@@ -158,10 +149,10 @@ const AddPost = () => {
               className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
               placeholder="Unique Post ID"
               required
+              readOnly
             />
           </div>
 
-          {/* Category */}
           <div>
             <label className="block font-semibold text-gray-700 mb-1">
               Category ID
@@ -190,7 +181,6 @@ const AddPost = () => {
             />
           </div>
 
-          {/* Title */}
           <div>
             <label className="block font-semibold text-gray-700 mb-1">
               Title
@@ -205,7 +195,6 @@ const AddPost = () => {
             />
           </div>
 
-          {/* Rating */}
           <div>
             <label className="block font-semibold text-gray-700 mb-1">
               Rating Number
@@ -236,7 +225,6 @@ const AddPost = () => {
             />
           </div>
 
-          {/* Views */}
           <div>
             <label className="block font-semibold text-gray-700 mb-1">
               Total Views
@@ -251,8 +239,6 @@ const AddPost = () => {
             />
           </div>
 
-          {/* Author */}
-
           <div>
             <label className="block font-semibold text-gray-700 mb-1">
               Author Name
@@ -260,8 +246,7 @@ const AddPost = () => {
             <input
               type="text"
               name="author.name"
-              defaultValue={user?.displayName}
-              value={user?.displayName}
+              value={formData.author.name}
               onChange={handleChange}
               readOnly
               className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 transition"
@@ -275,7 +260,7 @@ const AddPost = () => {
             <input
               type="date"
               name="author.published_date"
-              value={formData.author.published_date.split("T")[0]}
+              value={formData.author.published_date}
               onChange={handleChange}
               className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 transition"
             />
@@ -293,8 +278,6 @@ const AddPost = () => {
               className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 transition"
             />
           </div>
-
-          {/* Media URLs */}
 
           <div>
             <label className="block font-semibold text-gray-700 mb-1">
@@ -323,7 +306,6 @@ const AddPost = () => {
           </div>
         </div>
 
-        {/* Details */}
         <div>
           <label className="block font-semibold text-gray-700 mb-1">
             Details
@@ -339,7 +321,6 @@ const AddPost = () => {
           ></textarea>
         </div>
 
-        {/* Tags */}
         <div>
           <label className="block font-semibold text-gray-700 mb-1">
             Tags (comma-separated)
@@ -354,7 +335,6 @@ const AddPost = () => {
           />
         </div>
 
-        {/* Checkboxes */}
         <div className="flex flex-wrap gap-4">
           <label className="flex items-center gap-2 text-sm text-gray-600">
             <input
@@ -366,6 +346,7 @@ const AddPost = () => {
             />
             Today Pick
           </label>
+
           <label className="flex items-center gap-2 text-sm text-gray-600">
             <input
               type="checkbox"
@@ -376,6 +357,7 @@ const AddPost = () => {
             />
             Trending
           </label>
+
           <label className="flex items-center gap-2 text-sm text-gray-600">
             <input
               type="checkbox"
@@ -388,13 +370,12 @@ const AddPost = () => {
           </label>
         </div>
 
-        {/* Submit */}
-        <div className="">
+        <div>
           <button
             type="submit"
             className="w-full bg-indigo-600 mb-10 text-white font-semibold py-2 rounded-md hover:bg-indigo-700 shadow-md transition"
           >
-            Submit Post
+            Update Post
           </button>
         </div>
       </form>
@@ -402,4 +383,4 @@ const AddPost = () => {
   );
 };
 
-export default AddPost;
+export default EditPost;

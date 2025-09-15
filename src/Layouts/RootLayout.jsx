@@ -3,10 +3,12 @@ import Navbar from "../Components/Header/Navbar";
 import { Outlet } from "react-router";
 import Footer from "../Components/Footer/Footer";
 import Header from "../Components/Header/Header";
+import { ToastContainer } from "react-toastify";
 
 const RootLayout = () => {
   return (
     <div className="">
+      <ToastContainer />
       <header className= "sticky top-0 right-0 left-0 z-50">
         <div className="bg-[#010F83]">
           <nav className="max-w-[1700px]  mx-auto">
