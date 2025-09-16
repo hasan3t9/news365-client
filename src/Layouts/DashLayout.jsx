@@ -153,6 +153,18 @@ const DashLayout = () => {
                         className={({ isActive }) =>
                           isActive ? "text-blue-500 " : ""
                         }
+                        to={"/dashboard/add-news-post"}
+                      >
+                        <FaPlusCircle size={20} />
+                        Add News Post
+                      </NavLink>
+                    </li>
+                    <li>
+                      {" "}
+                      <NavLink
+                        className={({ isActive }) =>
+                          isActive ? "text-blue-500 " : ""
+                        }
                         to={"/dashboard/post-list"}
                       >
                         <FaListAlt size={20} />

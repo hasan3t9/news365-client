@@ -3,18 +3,27 @@ import axiosInstance from "../../Hook/useAxios";
 
 const Hero = () => {
   const [newsData, setNewsData] = useState([]);
-  const business = newsData[0];
+
+  const [h1c1, setH1C1] = useState([]);
+  const [h1c2, setH1C2] = useState([]);
+
   const technology = newsData[1];
   const health = newsData[2];
   const sport = newsData[3];
-  console.log({ business, technology, health, sport });
 
   useEffect(() => {
-    axiosInstance.get("/news-per-category").then((res) => {
+    axiosInstance.get("/all-news365/h1c1").then((res) => {
       const data = res.data;
-      setNewsData(data);
+      setH1C1(data);
+    });
+    axiosInstance.get("/all-news365/h1c2").then((res) => {
+      const data = res.data;
+      setH1C2(data);
     });
   }, []);
+  console.log(h1c2);
+
+  newsData.fil;
 
   return (
     <div className="h-auto md:h-[700px] flex p-4 lg:p-0 flex-col md:flex-row gap-5 my-10">
@@ -24,17 +33,17 @@ const Hero = () => {
           <div
             className="hero h-full"
             style={{
-              backgroundImage: `url(${business?.thumbnail_url})`,
+              backgroundImage: `url(${h1c1[0]?.imageUrl})`,
             }}
           >
             {/* <div className="hero-overlay"></div> */}
             <div className="self-end justify-self-start">
               <div className="flex flex-col text-white p-5 ">
                 <h1 className="text-lg bg-black p-1 w-max truncate  rounded-xl">
-                  {business?.category_name}
+                  {h1c1[0]?.category}
                 </h1>
                 <p className="text-xl bg-black py-2 px-3 w-max max-w-xs truncate rounded-2xl font-bold mt-3">
-                  {business?.title}
+                  {h1c1[0]?.headLine}
                 </p>
               </div>
             </div>
@@ -49,17 +58,17 @@ const Hero = () => {
           <div
             className="hero h-full"
             style={{
-              backgroundImage: `url(${technology?.thumbnail_url})`,
+              backgroundImage: `url(${h1c2[0]?.imageUrl})`,
             }}
           >
             {/* <div className="hero-overlay"></div> */}
             <div className="self-end justify-self-start">
               <div className="flex flex-col text-white p-5 ">
                 <h1 className="text-lg   bg-black p-1 w-max  truncate rounded-xl">
-                  {technology?.category_name}
+                  {h1c2[0]?.category}
                 </h1>
                 <p className="text-xl bg-black py-2 px-3 max-w-xs w-max truncate rounded-2xl font-bold mt-3">
-                  {technology?.title}
+                  {h1c2[0]?.headLine}
                 </p>
               </div>
             </div>

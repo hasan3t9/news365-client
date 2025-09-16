@@ -20,6 +20,7 @@ import DashboardHome from "../Pages/Dashboard/DashHome/DashHome";
 import AddPost from "../Pages/Dashboard/Admin/AddPost";
 import PostList from "../Pages/Dashboard/Admin/PostList";
 import EditPost from "../Pages/Dashboard/Admin/EditPost";
+import AddNewsPost from "../Pages/Dashboard/Admin/AddNewsPost";
 
 const router = createBrowserRouter([
   {
@@ -98,6 +99,10 @@ const router = createBrowserRouter([
       {
         path: "/dashboard/add-post",
         element: <AddPost></AddPost>,
+      },
+      {
+        path: "/dashboard/add-news-post",
+        element: <AddNewsPost></AddNewsPost>,
       },
       {
         path: "/dashboard/post-list",
