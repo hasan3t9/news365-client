@@ -12,7 +12,6 @@ import PoliticsNews from "../Pages/News/PoliticsNews";
 import EduNews from "../Pages/News/EduNews";
 import LifestyleNews from "../Pages/News/LifestyleNews";
 import NewsDetails from "../Pages/NewsDetails/NewsDetails";
-import LoginForm from "../Pages/Authentication/Login";
 import Login from "../Pages/Authentication/Login";
 import Register from "../Pages/Authentication/Register";
 import DashLayout from "../Layouts/DashLayout";
@@ -32,43 +31,43 @@ const router = createBrowserRouter([
         Component: Home,
       },
       {
-        path: "/category/1",
+        path: "/category/breaking-news",
         Component: BreakingNews,
       },
       {
-        path: "/category/2",
+        path: "/category/business-news",
         Component: BusinessNews,
       },
       {
-        path: "/category/3",
+        path: "/category/technology-news",
         Component: TechNews,
       },
       {
-        path: "/category/4",
+        path: "/category/health-news",
         Component: HealthNews,
       },
       {
-        path: "/category/5",
+        path: "/category/sport-news",
         Component: SportNews,
       },
       {
-        path: "/category/6",
+        path: "/category/entertainment-news",
         Component: EntertainNews,
       },
       {
-        path: "/category/7",
+        path: "/category/science-news",
         Component: ScienceNews,
       },
       {
-        path: "/category/8",
+        path: "/category/politics-news",
         Component: PoliticsNews,
       },
       {
-        path: "/category/9",
+        path: "/category/education-news",
         Component: EduNews,
       },
       {
-        path: "/category/10",
+        path: "/category/lifestyle-news",
         Component: LifestyleNews,
       },
       {

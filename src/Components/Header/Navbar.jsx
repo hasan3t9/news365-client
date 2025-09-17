@@ -1,16 +1,8 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { FaSearch } from "react-icons/fa";
 import { NavLink } from "react-router";
 
 const Navbar = () => {
-  const [categories, setCategories] = useState([]);
-  useEffect(() => {
-    axios.get("http://localhost:3000/categories").then((result) => {
-      const data = result.data;
-      setCategories(data);
-    });
-  }, []);
 
   const navLink = (
     <>
@@ -26,20 +18,114 @@ const Navbar = () => {
           All-News
         </NavLink>
       </li>
-      {categories.map((category) => (
-        <li key={category.id}>
-          <NavLink
-            to={`/category/${category.id}`}
-            className={({ isActive }) =>
-              isActive
-                ? "border-b-2 border-white text-lg uppercase font-semibold transition duration-200"
-                : "text-lg uppercase font-semibold hover:border-b-2 hover:border-white transition duration-200"
-            }
-          >
-            {category.name}
-          </NavLink>
-        </li>
-      ))}
+      <li>
+        <NavLink
+          to={`/category/breaking-news`}
+          className={({ isActive }) =>
+            isActive
+              ? "border-b-2 border-white text-lg uppercase font-semibold transition duration-200"
+              : "text-lg uppercase font-semibold hover:border-b-2 hover:border-white transition duration-200"
+          }
+        >
+          Breaking News
+        </NavLink>
+      </li>
+      <li>
+        <NavLink
+          to={`/category/business-news`}
+          className={({ isActive }) =>
+            isActive
+              ? "border-b-2 border-white text-lg uppercase font-semibold transition duration-200"
+              : "text-lg uppercase font-semibold hover:border-b-2 hover:border-white transition duration-200"
+          }
+        >
+          Business
+        </NavLink>
+      </li>
+      <li>
+        <NavLink
+          to={`/category/technology-news`}
+          className={({ isActive }) =>
+            isActive
+              ? "border-b-2 border-white text-lg uppercase font-semibold transition duration-200"
+              : "text-lg uppercase font-semibold hover:border-b-2 hover:border-white transition duration-200"
+          }
+        >
+          Technology
+        </NavLink>
+      </li>
+      <li>
+        <NavLink
+          to={`/category/health-news`}
+          className={({ isActive }) =>
+            isActive
+              ? "border-b-2 border-white text-lg uppercase font-semibold transition duration-200"
+              : "text-lg uppercase font-semibold hover:border-b-2 hover:border-white transition duration-200"
+          }
+        >
+          Health
+        </NavLink>
+      </li>
+      <li>
+        <NavLink
+          to={`/category/sport-news`}
+          className={({ isActive }) =>
+            isActive
+              ? "border-b-2 border-white text-lg uppercase font-semibold transition duration-200"
+              : "text-lg uppercase font-semibold hover:border-b-2 hover:border-white transition duration-200"
+          }
+        >
+         Sports
+        </NavLink>
+      </li>
+      <li>
+        <NavLink
+          to={`/category/entertainment-news`}
+          className={({ isActive }) =>
+            isActive
+              ? "border-b-2 border-white text-lg uppercase font-semibold transition duration-200"
+              : "text-lg uppercase font-semibold hover:border-b-2 hover:border-white transition duration-200"
+          }
+        >
+          Entertainment
+        </NavLink>
+      </li>
+      <li>
+        <NavLink
+          to={`/category/science-news`}
+          className={({ isActive }) =>
+            isActive
+              ? "border-b-2 border-white text-lg uppercase font-semibold transition duration-200"
+              : "text-lg uppercase font-semibold hover:border-b-2 hover:border-white transition duration-200"
+          }
+        >
+          Science
+        </NavLink>
+      </li>
+      <li>
+        <NavLink
+          to={`/category/politics-news`}
+          className={({ isActive }) =>
+            isActive
+              ? "border-b-2 border-white text-lg uppercase font-semibold transition duration-200"
+              : "text-lg uppercase font-semibold hover:border-b-2 hover:border-white transition duration-200"
+          }
+        >
+          Politics
+        </NavLink>
+      </li>
+      <li>
+        <NavLink
+          to={`/category/lifestyle-news`}
+          className={({ isActive }) =>
+            isActive
+              ? "border-b-2 border-white text-lg uppercase font-semibold transition duration-200"
+              : "text-lg uppercase font-semibold hover:border-b-2 hover:border-white transition duration-200"
+          }
+        >
+          Lifestyle
+        </NavLink>
+      </li>
       <li>
         <NavLink
           to={`/dashboard`}

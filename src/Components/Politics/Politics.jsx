@@ -1,48 +1,181 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../../Hook/useAxios";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 
 const Politics = () => {
-  const navigate = useNavigate();
-  const [politics, setPolitics] = useState([]);
+  // const navigate = useNavigate();
+  const [h3c1, setH3C1] = useState([]);
+  const [h3c2, setH3C2] = useState([]);
+  const [h3c3, setH3C3] = useState([]);
+  const [h3c4, setH3C4] = useState([]);
+  const [h3c5, setH3C5] = useState([]);
+  const [h3c6, setH3C6] = useState([]);
   useEffect(() => {
-    axiosInstance.get("/politics").then((res) => {
+    axiosInstance.get("/all-news365/h3c1").then((res) => {
       const data = res.data;
-      setPolitics(data);
+      setH3C1(data);
+    });
+    axiosInstance.get("/all-news365/h3c2").then((res) => {
+      const data = res.data;
+      setH3C2(data);
+    });
+    axiosInstance.get("/all-news365/h3c3").then((res) => {
+      const data = res.data;
+      setH3C3(data);
+    });
+    axiosInstance.get("/all-news365/h3c4").then((res) => {
+      const data = res.data;
+      setH3C4(data);
+    });
+    axiosInstance.get("/all-news365/h3c5").then((res) => {
+      const data = res.data;
+      setH3C5(data);
+    });
+    axiosInstance.get("/all-news365/h3c6").then((res) => {
+      const data = res.data;
+      setH3C6(data);
     });
   }, []);
+  const details1 = h3c1[0]?.details;
+  const details2 = h3c2[0]?.details;
+  const details3 = h3c3[0]?.details;
+  const details4 = h3c4[0]?.details;
+  const details5 = h3c5[0]?.details;
+  const details6 = h3c6[0]?.details;
+
   return (
     <div className="mb-20 px-3 md:px-0">
-      <div className="flex mb-10  items-center justify-between">
+      <div className="flex items-center mb-10  justify-between">
         <h1 className="uppercase text-2xl font-bold w-max border-b-3">
           Politics
         </h1>
-        <Link to={"/category/8"}>
+        <Link to={"/category/6"}>
           <h1 className="text-lg font-semibold border-b-2">View All</h1>
         </Link>
       </div>
       <div className="">
         <div className="h-auto w-full ">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {politics.map((ent) => (
-              <div
-                onClick={() => navigate(`/category/${ent.id}`)}
-                key={ent._id}
-                className="card cursor-pointer max-w-[600px]  shadow-sm"
-              >
-                <figure>
-                  <img
-                    className="w-full h-[350px] transform transition-transform duration-500 ease-in-out hover:scale-110"
-                    src={ent.thumbnail_url}
-                    alt="entertainment"
-                  />
-                </figure>
-                <div className="px-2 pt-2 pb-5">
-                  <h2 className="text-xl font-bold">{ent.title}</h2>
-                  <p className="text-lg truncate">{ent.details}</p>
-                </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            {/* ----------------h2c1----------- */}
+            <div
+              // onClick={() => navigate(`/category/${ent.id}`)}
+              className="card cursor-pointer max-w-[600px]  shadow-sm"
+            >
+              <figure>
+                <img
+                  className="w-full h-[350px] transform transition-transform duration-300 ease-in-out hover:scale-110"
+                  src={h3c1[0]?.image || h3c1[0]?.imageUrl}
+                  alt="Politics"
+                />
+              </figure>
+              <div className="px-2 pt-2 pb-5">
+                <h2 className="text-xl  font-bold">{h3c1[0]?.headLine}</h2>
+                <div
+                  dangerouslySetInnerHTML={{ __html: details1 }}
+                  className="text-lg mt-2 line-clamp-2"
+                ></div>
               </div>
-            ))}
+            </div>
+            {/* ----------------h2c2----------- */}
+            <div
+              // onClick={() => navigate(`/category/${ent.id}`)}
+              className="card cursor-pointer max-w-[600px]  shadow-sm"
+            >
+              <figure>
+                <img
+                  className="w-full h-[350px] transform transition-transform duration-300 ease-in-out hover:scale-110"
+                  src={h3c2[0]?.image || h3c2[0]?.imageUrl}
+                  alt="Politics"
+                />
+              </figure>
+              <div className="px-2 pt-2 pb-5">
+                <h2 className="text-xl  font-bold">{h3c2[0]?.headLine}</h2>
+                <div
+                  dangerouslySetInnerHTML={{ __html: details2 }}
+                  className="text-lg mt-2 line-clamp-2"
+                ></div>
+              </div>
+            </div>
+            {/* ----------------h2c3----------- */}
+            <div
+              // onClick={() => navigate(`/category/${ent.id}`)}
+              className="card cursor-pointer max-w-[600px]  shadow-sm"
+            >
+              <figure>
+                <img
+                  className="w-full h-[350px] transform transition-transform duration-300 ease-in-out hover:scale-110"
+                  src={h3c3[0]?.image || h3c3[0]?.imageUrl}
+                  alt="Politics"
+                />
+              </figure>
+              <div className="px-2 pt-2 pb-5">
+                <h2 className="text-xl  font-bold">{h3c3[0]?.headLine}</h2>
+                <div
+                  dangerouslySetInnerHTML={{ __html: details3 }}
+                  className="text-lg mt-2 line-clamp-2"
+                ></div>
+              </div>
+            </div>
+            {/* ----------------h2c4----------- */}
+            <div
+              // onClick={() => navigate(`/category/${ent.id}`)}
+              className="card cursor-pointer max-w-[600px]  shadow-sm"
+            >
+              <figure>
+                <img
+                  className="w-full h-[350px] transform transition-transform duration-300 ease-in-out hover:scale-110"
+                  src={h3c4[0]?.image || h3c4[0]?.imageUrl}
+                  alt="Politics"
+                />
+              </figure>
+              <div className="px-2 pt-2 pb-5">
+                <h2 className="text-xl  font-bold">{h3c4[0]?.headLine}</h2>
+                <div
+                  dangerouslySetInnerHTML={{ __html: details4 }}
+                  className="text-lg mt-2 line-clamp-2"
+                ></div>
+              </div>
+            </div>
+            {/* ----------------h2c5----------- */}
+            <div
+              // onClick={() => navigate(`/category/${ent.id}`)}
+              className="card cursor-pointer max-w-[600px]  shadow-sm"
+            >
+              <figure>
+                <img
+                  className="w-full h-[350px] transform transition-transform duration-300 ease-in-out hover:scale-110"
+                  src={h3c5[0]?.image || h3c5[0]?.imageUrl}
+                  alt="Politics"
+                />
+              </figure>
+              <div className="px-2 pt-2 pb-5">
+                <h2 className="text-xl  font-bold">{h3c5[0]?.headLine}</h2>
+                <div
+                  dangerouslySetInnerHTML={{ __html: details5 }}
+                  className="text-lg mt-2 line-clamp-2"
+                ></div>
+              </div>
+            </div>
+            {/* ----------------h2c6----------- */}
+            <div
+              // onClick={() => navigate(`/category/${ent.id}`)}
+              className="card cursor-pointer max-w-[600px]  shadow-sm"
+            >
+              <figure>
+                <img
+                  className="w-full h-[350px] transform transition-transform duration-300 ease-in-out hover:scale-110"
+                  src={h3c6[0]?.image || h3c6[0]?.imageUrl}
+                  alt="Politics"
+                />
+              </figure>
+              <div className="px-2 pt-2 pb-5">
+                <h2 className="text-xl  font-bold">{h3c6[0]?.headLine}</h2>
+                <div
+                  dangerouslySetInnerHTML={{ __html: details6 }}
+                  className="text-lg mt-2 line-clamp-2"
+                ></div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
