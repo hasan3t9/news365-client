@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../../Hook/useAxios";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 const Entertainment = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [h2c1, setH2C1] = useState([]);
   const [h2c2, setH2C2] = useState([]);
   const [h2c3, setH2C3] = useState([]);
@@ -58,7 +58,7 @@ const Entertainment = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
             {/* ----------------h2c1----------- */}
             <div
-              // onClick={() => navigate(`/category/${ent.id}`)}
+              onClick={() => navigate(`/category/${h2c1[0]?._id}`)}
               className="card cursor-pointer max-w-[600px]  shadow-sm"
             >
               <figure>
@@ -78,7 +78,7 @@ const Entertainment = () => {
             </div>
             {/* ----------------h2c2----------- */}
             <div
-              // onClick={() => navigate(`/category/${ent.id}`)}
+                    onClick={() => navigate(`/category/${h2c2[0]?._id}`)}
               className="card cursor-pointer max-w-[600px]  shadow-sm"
             >
               <figure>
@@ -98,7 +98,7 @@ const Entertainment = () => {
             </div>
             {/* ----------------h2c3----------- */}
             <div
-              // onClick={() => navigate(`/category/${ent.id}`)}
+                    onClick={() => navigate(`/category/${h2c3[0]?._id}`)}
               className="card cursor-pointer max-w-[600px]  shadow-sm"
             >
               <figure>
@@ -118,7 +118,7 @@ const Entertainment = () => {
             </div>
             {/* ----------------h2c4----------- */}
             <div
-              // onClick={() => navigate(`/category/${ent.id}`)}
+                    onClick={() => navigate(`/category/${h2c4[0]?._id}`)}
               className="card cursor-pointer max-w-[600px]  shadow-sm"
             >
               <figure>
@@ -138,7 +138,7 @@ const Entertainment = () => {
             </div>
             {/* ----------------h2c5----------- */}
             <div
-              // onClick={() => navigate(`/category/${ent.id}`)}
+                    onClick={() => navigate(`/category/${h2c5[0]?._id}`)}
               className="card cursor-pointer max-w-[600px]  shadow-sm"
             >
               <figure>
@@ -158,7 +158,7 @@ const Entertainment = () => {
             </div>
             {/* ----------------h2c6----------- */}
             <div
-              // onClick={() => navigate(`/category/${ent.id}`)}
+                    onClick={() => navigate(`/category/${h2c6[0]?._id}`)}
               className="card cursor-pointer max-w-[600px]  shadow-sm"
             >
               <figure>

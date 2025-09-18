@@ -18,8 +18,9 @@ import DashLayout from "../Layouts/DashLayout";
 import DashboardHome from "../Pages/Dashboard/DashHome/DashHome";
 import AddPost from "../Pages/Dashboard/Admin/AddPost";
 import PostList from "../Pages/Dashboard/Admin/PostList";
-import EditPost from "../Pages/Dashboard/Admin/EditPost";
 import AddNewsPost from "../Pages/Dashboard/Admin/AddNewsPost";
+import EditNewsPost from "../Pages/Dashboard/Admin/EditNewsPost";
+import NewsPostList from "../Pages/Dashboard/Admin/NewsPostList";
 
 const router = createBrowserRouter([
   {
@@ -83,7 +84,7 @@ const router = createBrowserRouter([
 
         Component: NewsDetails,
         loader: ({ params }) =>
-          fetch(`http://localhost:3000/all-news/${params.id}`),
+          fetch(`http://localhost:3000/all-news365/${params.id}`),
       },
     ],
   },
@@ -108,8 +109,12 @@ const router = createBrowserRouter([
         element: <PostList></PostList>,
       },
       {
+        path: "/dashboard/news-post-list",
+        element: <NewsPostList></NewsPostList>,
+      },
+      {
         path: "/dashboard/edit-post/:id",
-        element: <EditPost></EditPost>,
+        element: <EditNewsPost></EditNewsPost>,
       },
     ],
   },

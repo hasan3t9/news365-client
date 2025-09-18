@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../../Hook/useAxios";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 const Business = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [h4c1, setH4C1] = useState([]);
   const [h4c2, setH4C2] = useState([]);
   const [h4c3, setH4C3] = useState([]);
@@ -58,7 +58,7 @@ const Business = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
             {/* ----------------h2c1----------- */}
             <div
-              // onClick={() => navigate(`/category/${ent.id}`)}
+              onClick={() => navigate(`/category/${h4c1[0]?._id}`)}
               className="card cursor-pointer max-w-[600px]  shadow-sm"
             >
               <figure>
@@ -78,7 +78,7 @@ const Business = () => {
             </div>
             {/* ----------------h2c2----------- */}
             <div
-              // onClick={() => navigate(`/category/${ent.id}`)}
+               onClick={() => navigate(`/category/${h4c2[0]?._id}`)}
               className="card cursor-pointer max-w-[600px]  shadow-sm"
             >
               <figure>
@@ -98,7 +98,7 @@ const Business = () => {
             </div>
             {/* ----------------h2c3----------- */}
             <div
-              // onClick={() => navigate(`/category/${ent.id}`)}
+               onClick={() => navigate(`/category/${h4c3[0]?._id}`)}
               className="card cursor-pointer max-w-[600px]  shadow-sm"
             >
               <figure>
@@ -118,7 +118,7 @@ const Business = () => {
             </div>
             {/* ----------------h2c4----------- */}
             <div
-              // onClick={() => navigate(`/category/${ent.id}`)}
+               onClick={() => navigate(`/category/${h4c4[0]?._id}`)}
               className="card cursor-pointer max-w-[600px]  shadow-sm"
             >
               <figure>
@@ -138,7 +138,7 @@ const Business = () => {
             </div>
             {/* ----------------h2c5----------- */}
             <div
-              // onClick={() => navigate(`/category/${ent.id}`)}
+               onClick={() => navigate(`/category/${h4c5[0]?._id}`)}
               className="card cursor-pointer max-w-[600px]  shadow-sm"
             >
               <figure>
@@ -158,7 +158,7 @@ const Business = () => {
             </div>
             {/* ----------------h2c6----------- */}
             <div
-              // onClick={() => navigate(`/category/${ent.id}`)}
+                onClick={() => navigate(`/category/${h4c6[0]?._id}`)}
               className="card cursor-pointer max-w-[600px]  shadow-sm"
             >
               <figure>

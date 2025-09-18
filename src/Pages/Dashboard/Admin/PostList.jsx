@@ -12,7 +12,7 @@ const PostList = () => {
   const newsPerPage = 10;
 
   useEffect(() => {
-    axiosInstance.get("/all-news").then((res) => {
+    axiosInstance.get("/all-news365").then((res) => {
       setNews(res.data);
     });
   }, []);
@@ -109,19 +109,19 @@ const PostList = () => {
                       <td>{sl}</td>
                       <td>
                         <img
-                          src={item?.thumbnail_url}
+                          src={item?.image || item?.imageUrl}
                           alt="thumb"
                           className="w-16 h-12 object-cover rounded"
                         />
                       </td>
-                      <td className="font-medium">{item?.title}</td>
+                      <td className="font-medium">{item?.headLine}</td>
                       <td>
                         <span className="badge badge-success text-white">
-                          {item?.category_name || "N/A"}
+                          {item?.category || "N/A"}
                         </span>
                       </td>
                       <td className="text-blue-600">
-                        {item?.author?.name || "N/A"}
+                        {item?.reporter || "N/A"}
                       </td>
                     </tr>
 
@@ -131,23 +131,23 @@ const PostList = () => {
                           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4 text-sm">
                             <div>
                               <strong>Sub category:</strong>{" "}
-                              {item?.sub_category || "N/A"}
+                              {item?.subCategory || "N/A"}
                             </div>
-                            <div>
+                            {/* <div>
                               <strong>Hit:</strong> {item?.total_view}
-                            </div>
+                            </div> */}
                             <div>
-                              <strong>Post by:</strong> {item?.author?.name}
+                              <strong>Post by:</strong> {item?.reporter}
                             </div>
                             <div>
                               <strong>Release date:</strong>{" "}
-                              {item?.release_date || "N/A"}
+                              {item?.releaseDate || "N/A"}
                             </div>
                             <div>
                               <strong>Post date:</strong> {item?.date || "N/A"}
                             </div>
                             <div>
-                              <strong>Language:</strong> English
+                              <strong>Language:</strong> {item?.language}
                             </div>
                             <div>
                               <strong>Status:</strong>{" "}
@@ -164,12 +164,12 @@ const PostList = () => {
                             <div>
                               <strong>Action:</strong>
                               <div className="flex gap-2 mt-1 font-bold text-sm">
-                                <Link to={`/dashboard/edit-post/${item.id}`}>
+                                <Link to={`/dashboard/edit-post/${item._id}`}>
                                   <button className="btn btn-xs btn-success">
                                     <i className="fas fa-eye"></i> Edit
                                   </button>
                                 </Link>
-                                <Link to={`/category/${item.id}`}>
+                                <Link to={`/category/${item._id}`}>
                                   <button className="btn btn-xs btn-warning">
                                     <i className="fas fa-edit"></i> View
                                   </button>

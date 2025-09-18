@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../../Hook/useAxios";
+import { useNavigate } from "react-router";
 
 const Hero = () => {
+  const navigate = useNavigate();
   const [h1c1, setH1C1] = useState([]);
   const [h1c2, setH1C2] = useState([]);
   const [h1c3, setH1C3] = useState([]);
@@ -30,8 +32,9 @@ const Hero = () => {
     <div className="h-auto md:h-[700px] flex p-4 lg:p-0 flex-col md:flex-row gap-5 my-10">
       {/* Left side — RED */}
       <div className="w-full md:w-1/2">
-        <div className=" w-full h-60 md:h-full">
+        <div className=" w-full h-60 md:h-full cursor-pointer">
           <div
+            onClick={() => navigate(`/category/${h1c1[0]?._id}`)}
             className="hero h-full"
             style={{
               backgroundImage: `url(${h1c1[0]?.image || ""}),
@@ -57,8 +60,9 @@ const Hero = () => {
       {/* Right side — YELLOW + (PURPLE + BLUE) */}
       <div className="w-full md:w-1/2 flex flex-col gap-5">
         {/* YELLOW */}
-        <div className="bg-yellow-200 w-full h-60 md:h-1/2">
+        <div className="bg-yellow-200 w-full cursor-pointer h-60 md:h-1/2">
           <div
+            onClick={() => navigate(`/category/${h1c2[0]?._id}`)}
             className="hero h-full"
             style={{
               backgroundImage: `url(${h1c2[0]?.image || ""}),
@@ -82,8 +86,9 @@ const Hero = () => {
 
         {/* PURPLE + BLUE */}
         <div className="flex flex-col md:flex-row gap-5 w-full h-auto md:h-1/2">
-          <div className="w-full h-60 md:h-full md:w-1/2">
+          <div className="w-full h-60 md:h-full cursor-pointer md:w-1/2">
             <div
+              onClick={() => navigate(`/category/${h1c3[0]?._id}`)}
               className="hero h-full"
               style={{
                 backgroundImage: `url(${h1c3[0]?.image || ""}),
@@ -104,8 +109,9 @@ const Hero = () => {
               </div>
             </div>
           </div>
-          <div className="bg-blue-500 w-full h-60 md:h-full md:w-1/2">
+          <div className="bg-blue-500 w-full h-60 md:h-full cursor-pointer md:w-1/2">
             <div
+              onClick={() => navigate(`/category/${h1c4[0]?._id}`)}
               className="hero h-full"
               style={{
                 backgroundImage: `url(${h1c4[0]?.image || ""}),

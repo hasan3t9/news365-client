@@ -5,7 +5,7 @@ import { useNavigate } from "react-router";
 const LifestyleNews = () => {
   const navigate = useNavigate();
   const [lifestyleNews, setLifestyleNews] = useState([]);
-  const [loading, setLoading] = useState(true); // Optional: loading state
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     axiosInstance
@@ -45,22 +45,24 @@ const LifestyleNews = () => {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {lifestyleNews.map((ent) => (
+          {lifestyleNews.map((life) => (
             <div
-              onClick={() => navigate(`/category/${ent.id}`)}
-              key={ent._id}
-              className="card cursor-pointer max-w-[600px] shadow-sm"
+              onClick={() => navigate(`/category/${life?._id}`)}
+              className="card cursor-pointer max-w-[600px]  shadow-sm"
             >
               <figure>
                 <img
-                  className="w-full h-[350px] object-cover transform transition-transform duration-500 ease-in-out hover:scale-110"
-                  src={ent?.thumbnail_url}
-                  alt="Lifestyle News"
+                  className="w-full h-[350px] transform transition-transform duration-300 ease-in-out hover:scale-110"
+                  src={life?.image || life?.imageUrl}
+                  alt="Business"
                 />
               </figure>
               <div className="px-2 pt-2 pb-5">
-                <h2 className="text-xl font-bold">{ent?.title}</h2>
-                <p className="text-lg truncate text-gray-700">{ent?.details}</p>
+                <h2 className="text-xl  font-bold">{life?.headLine}</h2>
+                <div
+                  dangerouslySetInnerHTML={{ __html: life?.details }}
+                  className="text-lg mt-2 line-clamp-2"
+                ></div>
               </div>
             </div>
           ))}

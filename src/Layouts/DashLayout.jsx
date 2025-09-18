@@ -171,6 +171,18 @@ const DashLayout = () => {
                         Post List
                       </NavLink>
                     </li>
+                    <li>
+                      {" "}
+                      <NavLink
+                        className={({ isActive }) =>
+                          isActive ? "text-blue-500 " : ""
+                        }
+                        to={"/dashboard/news-post-list"}
+                      >
+                        <FaListAlt size={20} />
+                        News Post List
+                      </NavLink>
+                    </li>
                   </ul>
                 )}
               </div>

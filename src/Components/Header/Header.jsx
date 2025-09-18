@@ -48,26 +48,29 @@ const Header = () => {
     <div className="flex flex-wrap items-center justify-between gap-3 p-2">
       {/* Left - Date */}
       <div className="font-semibold ml-3 md:ml-0">
-        
         <DateDisplay />
       </div>
 
       {/* Right - User / Social Icons / Auth Links */}
       <div className="flex items-center gap-3">
         {user ? (
-          <div
-            onClick={() => document.getElementById("my_modal_3").showModal()}
-            className="flex items-center gap-3  cursor-pointer"
-          >
+          <div className="flex items-center gap-3  cursor-pointer">
             {/* User Avatar */}
-            <div className="avatar pl-2">
-              <div className="ring-primary w-9 h-9 ring-offset-base-100  rounded-full ring-2 ring-offset-2">
-                <img src={user?.photoURL} alt="User" />
+            <div
+              onClick={() => document.getElementById("my_modal_3").showModal()}
+              className="flex items-center gap-2"
+            >
+              <div className="avatar pl-2">
+                <div className="ring-primary w-9 h-9 ring-offset-base-100  rounded-full ring-2 ring-offset-2">
+                  <img src={user?.photoURL} alt="User" />
+                </div>
+              </div>
+
+              {/* User Name (optional) */}
+              <div className="font-semibold hidden md:flex">
+                {user?.displayName}
               </div>
             </div>
-
-            {/* User Name (optional) */}
-            <div className="font-semibold hidden md:flex">{user?.displayName}</div>
 
             {/* Social Icons */}
             <div className="flex items-center text-white gap-2">
