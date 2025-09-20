@@ -7,7 +7,10 @@ export default function AddNewsPost() {
   const [details, setDetails] = useState("");
   const [categories, setCategories] = useState([]);
   const [loadingImage, setLoadingImage] = useState(false);
+  const [reporters, setReporters] = useState([]);
+  const baseURL = "http://localhost:3000";
 
+  // Main News Form Data
   const [formData, setFormData] = useState({
     language: "",
     category: "",
@@ -39,53 +42,45 @@ export default function AddNewsPost() {
     },
   });
 
-  useEffect(() => {
-    axiosInstance.get("/categories").then((res) => {
-      setCategories(res.data);
-    });
-  }, []);
+  // Reporter Form Data
+  const [repoFormData, setRepoFormData] = useState({
+    email: "",
+    reporterName: "",
+    designationName: "",
+    image: null,
+  });
+  const [preview, setPreview] = useState(null);
 
-  // handle input change
-  const handleChange = async (e) => {
+  // Main Form Input Change
+  const handleChange = (e) => {
     const { name, value, type, checked, files } = e.target;
 
     if (type === "file") {
       const file = files[0];
       if (!file) return;
-
       setLoadingImage(true);
 
-      // Cloudinary upload
       const data = new FormData();
       data.append("file", file);
       data.append("upload_preset", "my_preset");
-      try {
-        const res = await fetch(
-          `https://api.cloudinary.com/v1_1/dwsj0yzda/image/upload`,
-          {
-            method: "POST",
-            body: data,
-          }
-        );
-        const uploadRes = await res.json();
 
-        setFormData((prev) => ({
-          ...prev,
-          [name]: uploadRes.secure_url,
-        }));
-      } catch (err) {
-        console.error("Cloudinary upload error:", err);
-      } finally {
-        setLoadingImage(false);
-      }
+      fetch(`https://api.cloudinary.com/v1_1/dwsj0yzda/image/upload`, {
+        method: "POST",
+        body: data,
+      })
+        .then((res) => res.json())
+        .then((uploadRes) => {
+          setFormData((prev) => ({
+            ...prev,
+            [name]: uploadRes.secure_url,
+          }));
+        })
+        .catch((err) => console.error("Cloudinary upload error:", err))
+        .finally(() => setLoadingImage(false));
     } else if (name in formData.post) {
-      
       setFormData((prev) => ({
         ...prev,
-        post: {
-          ...prev.post,
-          [name]: checked,
-        },
+        post: { ...prev.post, [name]: checked },
       }));
     } else {
       setFormData((prev) => ({
@@ -95,7 +90,61 @@ export default function AddNewsPost() {
     }
   };
 
-  // handle form submit
+  // Reporter Input Change
+  const handleReporterChange = (e) => {
+    const { name, value, files } = e.target;
+
+    if (e.target.type === "file") {
+      const file = files[0];
+      if (!file) return;
+
+      setRepoFormData((prev) => ({ ...prev, image: file }));
+      setPreview(URL.createObjectURL(file));
+    } else {
+      setRepoFormData((prev) => ({ ...prev, [name]: value }));
+    }
+  };
+
+  // Reporter Form Submit
+  const handleReporterFormSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const formData = new FormData();
+      formData.append("image", repoFormData.image); // file
+      formData.append("email", repoFormData.email);
+      formData.append("reporterName", repoFormData.reporterName);
+      formData.append("designationName", repoFormData.designationName);
+
+      await axiosInstance.post("/reporters", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      toast.success("Reporter Added Successfully!");
+      setRepoFormData({
+        email: "",
+        reporterName: "",
+        designationName: "",
+        image: null,
+      });
+      setPreview(null);
+
+      document.getElementById("my_modal_3").close();
+    } catch (err) {
+      console.error("Upload failed:", err);
+      toast.error("Failed to add reporter!");
+    }
+  };
+
+  // Load Categories
+  useEffect(() => {
+    axiosInstance.get("/categories").then((res) => {
+      setCategories(res.data);
+    });
+    axiosInstance.get("/reporters").then((res) => setReporters(res.data));
+  }, []);
+
+  // Submit News
   const handleSubmit = (e) => {
     e.preventDefault();
     const payload = { ...formData, details };
@@ -137,6 +186,7 @@ export default function AddNewsPost() {
 
   return (
     <div className="p-6 lg:mx-16 mx-auto">
+      <h1 className="text-3xl font-bold mb-10 text-blue-600">Add News Post</h1>
       <form className="space-y-6" onSubmit={handleSubmit}>
         {/* Language, Category, Sub Category, Category Position */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -158,6 +208,7 @@ export default function AddNewsPost() {
             <label className="font-semibold">Category *</label>
             <select
               name="category"
+              required
               value={formData.category}
               onChange={handleChange}
               className="select select-bordered w-full"
@@ -232,7 +283,6 @@ export default function AddNewsPost() {
               className="input input-bordered w-full"
             />
           </div>
-          {/* Short Head */}
           <div className="col-span-2">
             <label className="font-semibold">Short Head</label>
             <input
@@ -264,9 +314,7 @@ export default function AddNewsPost() {
           <label className="font-semibold">Details *</label>
           <CKEditor
             initData={details}
-            config={{
-              toolbar: "Full",
-            }}
+            config={{ toolbar: "Full" }}
             onChange={(evt) => setDetails(evt.editor.getData())}
             editorUrl="https://cdn.ckeditor.com/4.17.2/full/ckeditor.js"
           />
@@ -278,6 +326,7 @@ export default function AddNewsPost() {
             <label className="font-semibold">Image</label>
             <input
               type="file"
+              required
               name="image"
               onChange={handleChange}
               className="file-input file-input-bordered w-full"
@@ -345,6 +394,7 @@ export default function AddNewsPost() {
             <label className="font-semibold">Reporter *</label>
             <div className="join w-full">
               <select
+                required={true}
                 name="reporter"
                 value={formData.reporter}
                 onChange={handleChange}
@@ -353,10 +403,24 @@ export default function AddNewsPost() {
                 <option disabled value="">
                   Select Reporter
                 </option>
-                <option value="Shaeed">Shaeed</option>
-                <option value="Hasan">Hasan</option>
+                {reporters.map((rep) => (
+                  <option key={rep._id} value={rep?.reporterName}>
+                    <img
+                      className="w-7 h-7 rounded-full"
+                      src={`${baseURL}${rep?.image?.original}`}
+                      alt={rep?.reporterName}
+                    />
+                    <p>{rep?.reporterName}</p>
+                  </option>
+                ))}
               </select>
-              <button type="button" className="btn btn-primary join-item">
+              <button
+                onClick={() =>
+                  document.getElementById("my_modal_3").showModal()
+                }
+                type="button"
+                className="btn btn-primary join-item"
+              >
                 +
               </button>
             </div>
@@ -376,7 +440,7 @@ export default function AddNewsPost() {
           />
         </div>
 
-        {/* Post Tags, Reference, Meta Keywords */}
+        {/* Tags, Reference, Keywords */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <input
             type="text"
@@ -434,19 +498,88 @@ export default function AddNewsPost() {
                 checked={formData.post[field]}
                 onChange={handleChange}
                 className="checkbox"
-              />{" "}
+              />
               {field.replace(/([A-Z])/g, " $1")}
             </label>
           ))}
         </div>
 
-        {/* Save Button */}
         <div>
           <button type="submit" className="btn btn-success">
             Save
           </button>
         </div>
       </form>
+      {/* Reporter Modal */}
+      <dialog id="my_modal_3" className="modal">
+        <div className="modal-box">
+          <div className="flex justify-end">
+            <button
+              type="button"
+              className="btn btn-sm btn-circle btn-ghost"
+              onClick={() => document.getElementById("my_modal_3").close()}
+            >
+              ✕
+            </button>
+          </div>
+          <div className="text-2xl font-bold mb-5">Add Reporter</div>
+          <form onSubmit={handleReporterFormSubmit} className="p-4 space-y-3">
+            <div className="flex flex-col gap-2">
+              <label className="font-semibold">Email</label>
+              <input
+                type="email"
+                name="email"
+                value={repoFormData.email}
+                onChange={handleReporterChange}
+                className="input input-bordered w-full"
+                placeholder="example@mail.com"
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <label className="font-semibold">Reporter Name</label>
+              <input
+                type="text"
+                name="reporterName"
+                value={repoFormData.reporterName}
+                onChange={handleReporterChange}
+                className="input input-bordered w-full"
+                placeholder="John Doe"
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <label className="font-semibold">Designation</label>
+              <input
+                type="text"
+                name="designationName"
+                value={repoFormData.designationName}
+                onChange={handleReporterChange}
+                className="input input-bordered w-full"
+                placeholder="Enter Designation"
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <label className="font-semibold">Profile Image</label>
+              <input
+                type="file"
+                name="image"
+                accept="image/*"
+                onChange={handleReporterChange}
+                className="file-input file-input-bordered w-full"
+              />
+              {preview && (
+                <img
+                  src={preview}
+                  alt="preview"
+                  className="w-32 h-20 object-cover rounded-md mt-2"
+                />
+              )}
+            </div>
+            <button type="submit" className="btn btn-primary w-full">
+              Add
+            </button>
+          </form>
+        </div>
+      </dialog>
     </div>
   );
 }
