@@ -58,7 +58,7 @@ export default function NewsDetails() {
           src={data?.image || data.imageUrl}
           alt={data?.imageAlt}
           title={data?.imageTitle}
-          className="w-full rounded-lg shadow-md"
+          className="w-full h-[550px] rounded-lg shadow-md"
         />
       </div>
 

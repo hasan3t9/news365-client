@@ -42,7 +42,7 @@ const EditPost = () => {
           alert("Post not found");
           return navigate("/dashboard/post-list");
         }
-        const existingPost = res.data[0];
+        const existingPost = res.data
 
         setFormData({
           ...existingPost,

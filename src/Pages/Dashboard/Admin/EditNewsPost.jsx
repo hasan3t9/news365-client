@@ -11,7 +11,8 @@ export default function EditNewsPost() {
   const [details, setDetails] = useState("");
   const [categories, setCategories] = useState([]);
   const [loadingImage, setLoadingImage] = useState(false);
-
+  const [reporters, setReporters] = useState([]);
+const baseURL = "http://localhost:3000";
   const [formData, setFormData] = useState({
     language: "",
     category: "",
@@ -55,6 +56,12 @@ export default function EditNewsPost() {
     axiosInstance.get("/categories").then((res) => {
       setCategories(res.data);
     });
+  }, []);
+  useEffect(() => {
+    axiosInstance
+      .get("/reporters")
+      .then((res) => setReporters(res.data))
+      .catch((err) => console.error("Failed to load reporters", err));
   }, []);
 
   // load existing post data
@@ -147,7 +154,7 @@ export default function EditNewsPost() {
       .put(`/update-news/${id}`, payload)
       .then(() => {
         toast.success("Post Updated Successfully");
-        navigate("/dashboard/post-list");
+        navigate("/dashboard/news-post-list");
       })
       .catch((err) => {
         console.error("Update error:", err);
@@ -370,23 +377,30 @@ export default function EditNewsPost() {
           </div>
           <div>
             <label className="font-semibold">Reporter *</label>
-            <div className="join w-full">
-              <select
-                name="reporter"
-                value={formData.reporter}
-                onChange={handleChange}
-                className="select select-bordered join-item w-full"
-              >
-                <option disabled value="">
-                  Select Reporter
+            <select
+              name="reporter"
+              value={
+                reporters.find((rep) => rep.reporterName === formData.reporter)
+                  ? formData.reporter
+                  : ""
+              }
+              onChange={handleChange}
+              className="select select-bordered w-full"
+              required
+            >
+              <option value="">Select Reporter</option>
+              {reporters.map((rep) => (
+                <option key={rep._id} value={rep.reporterName}>
+                  <img
+                      className="w-7 h-7 rounded-full"
+                      src={`${baseURL}${rep?.image?.original}`}
+                      alt={rep?.reporterName}
+                    />
+                  {rep.reporterName}{" "}
+                  
                 </option>
-                <option value="Shaeed">Shaeed</option>
-                <option value="Hasan">Hasan</option>
-              </select>
-              <button type="button" className="btn btn-primary join-item">
-                +
-              </button>
-            </div>
+              ))}
+            </select>
           </div>
         </div>
 

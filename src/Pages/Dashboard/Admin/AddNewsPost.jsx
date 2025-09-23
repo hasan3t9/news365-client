@@ -9,6 +9,7 @@ export default function AddNewsPost() {
   const [loadingImage, setLoadingImage] = useState(false);
   const [reporters, setReporters] = useState([]);
   const baseURL = "http://localhost:3000";
+  const today = new Date().toISOString().split("T")[0];
 
   // Main News Form Data
   const [formData, setFormData] = useState({
@@ -17,7 +18,7 @@ export default function AddNewsPost() {
     subCategory: "",
     categoryPosition: "",
     homePosition: "",
-    releaseDate: "",
+    releaseDate: today,
     shortHead: "",
     headLine: "",
     image: "",
@@ -156,7 +157,7 @@ export default function AddNewsPost() {
         subCategory: "",
         categoryPosition: "",
         homePosition: "",
-        releaseDate: "",
+        releaseDate: today,
         shortHead: "",
         headLine: "",
         image: "",
@@ -278,6 +279,7 @@ export default function AddNewsPost() {
             <input
               type="date"
               name="releaseDate"
+             
               value={formData.releaseDate}
               onChange={handleChange}
               className="input input-bordered w-full"

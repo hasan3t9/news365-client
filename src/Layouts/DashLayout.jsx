@@ -135,18 +135,7 @@ const DashLayout = () => {
                 </div>
                 {openSection === "post" && (
                   <ul className="ml-6 mt-2 space-y-1 font-bold  ">
-                    <li>
-                      {" "}
-                      <NavLink
-                        className={({ isActive }) =>
-                          isActive ? "text-blue-500 " : ""
-                        }
-                        to={"/dashboard/add-post"}
-                      >
-                        <FaPlusCircle size={20} />
-                        Add Post
-                      </NavLink>
-                    </li>
+                   
                     <li>
                       {" "}
                       <NavLink
@@ -159,18 +148,7 @@ const DashLayout = () => {
                         Add News Post
                       </NavLink>
                     </li>
-                    <li>
-                      {" "}
-                      <NavLink
-                        className={({ isActive }) =>
-                          isActive ? "text-blue-500 " : ""
-                        }
-                        to={"/dashboard/post-list"}
-                      >
-                        <FaListAlt size={20} />
-                        Post List
-                      </NavLink>
-                    </li>
+                   
                     <li>
                       {" "}
                       <NavLink

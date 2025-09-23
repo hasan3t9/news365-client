@@ -16,8 +16,6 @@ import Login from "../Pages/Authentication/Login";
 import Register from "../Pages/Authentication/Register";
 import DashLayout from "../Layouts/DashLayout";
 import DashboardHome from "../Pages/Dashboard/DashHome/DashHome";
-import AddPost from "../Pages/Dashboard/Admin/AddPost";
-import PostList from "../Pages/Dashboard/Admin/PostList";
 import AddNewsPost from "../Pages/Dashboard/Admin/AddNewsPost";
 import EditNewsPost from "../Pages/Dashboard/Admin/EditNewsPost";
 import NewsPostList from "../Pages/Dashboard/Admin/NewsPostList";
@@ -96,18 +94,12 @@ const router = createBrowserRouter([
         index: true,
         element: <DashboardHome></DashboardHome>,
       },
-      {
-        path: "/dashboard/add-post",
-        element: <AddPost></AddPost>,
-      },
+      
       {
         path: "/dashboard/add-news-post",
         element: <AddNewsPost></AddNewsPost>,
       },
-      {
-        path: "/dashboard/post-list",
-        element: <PostList></PostList>,
-      },
+     
       {
         path: "/dashboard/news-post-list",
         element: <NewsPostList></NewsPostList>,

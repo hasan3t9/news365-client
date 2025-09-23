@@ -2,46 +2,65 @@ import React, { useEffect, useState } from "react";
 import axiosInstance from "../../../Hook/useAxios";
 import { FaEdit, FaEye } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { useNavigate } from "react-router";
+import Swal from "sweetalert2";
 
 export default function NewsPostList() {
   const [posts, setPosts] = useState([]);
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [entriesPerPage, setEntriesPerPage] = useState(10);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    axiosInstance.get("/all-news365").then((res) => {
-      setPosts(res.data);
-    });
+    axiosInstance.get("/all-news365").then((res) => setPosts(res.data));
   }, []);
 
   const [expandedRow, setExpandedRow] = useState(null);
-  const toggleExpand = (id) => {
+  const toggleExpand = (id) =>
     setExpandedRow(expandedRow === id ? null : id);
-  };
 
-  // === Search filter ===
   const filteredPosts = posts.filter((post) =>
     post.headLine?.toLowerCase().includes(search.toLowerCase())
   );
 
-  // === Pagination logic ===
   const indexOfLast = currentPage * entriesPerPage;
   const indexOfFirst = indexOfLast - entriesPerPage;
   const currentPosts = filteredPosts.slice(indexOfFirst, indexOfLast);
   const totalPages = Math.ceil(filteredPosts.length / entriesPerPage);
 
   const handlePageChange = (page) => {
-    if (page >= 1 && page <= totalPages) {
-      setCurrentPage(page);
-    }
+    if (page >= 1 && page <= totalPages) setCurrentPage(page);
+  };
+
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won’t be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosInstance
+          .delete(`/all-news365/${id}`)
+          .then(() => {
+            Swal.fire("Deleted!", "Your data has been deleted.", "success");
+            setPosts((prev) => prev.filter((p) => p._id !== id));
+          })
+          .catch(() => Swal.fire("Error!", "Something went wrong.", "error"));
+      }
+    });
   };
 
   return (
     <div className="overflow-x-auto lg:p-4">
-      <h1 className="font-bold text-2xl mb-10 ">Post List</h1>
+      <h1 className="font-bold text-2xl mb-10">Post List</h1>
+
       {/* Top Controls */}
-      <div className="flex flex-col  gap-3 lg:flex-row justify-between items-center mb-10">
+      <div className="flex flex-col gap-3 lg:flex-row justify-between items-center mb-10">
         <div>
           Show{" "}
           <select
@@ -122,7 +141,6 @@ export default function NewsPostList() {
         <tbody>
           {currentPosts.map((post, index) => (
             <React.Fragment key={post._id}>
-              {/* Main Row */}
               <tr>
                 <td
                   onClick={() => toggleExpand(post._id)}
@@ -133,27 +151,26 @@ export default function NewsPostList() {
                 <td className="border border-gray-300 px-1 py-1">
                   <img
                     src={post?.image || post?.imageUrl}
-                    className="w-[80%] mx-auto h-20"
+                    className="w-[80%] mx-auto h-20 object-cover"
                     alt="post"
                   />
                 </td>
-                <td className="border border-gray-300 lg:px-2 py-1 text-wrap text-sm lg:text-lg text-center mx-auto">
+                <td className="border border-gray-300 px-2 py-1 text-sm lg:text-base text-center break-words max-h-[3rem] overflow-hidden">
                   {post.headLine}
                 </td>
-                <td className="border border-gray-300 py-1 text-sm w-max text-center ">
+                <td className="border border-gray-300 py-1 text-sm w-max text-center break-words">
                   <p className="inline-block bg-green-700 text-white font-bold px-1 text-center rounded">
                     {post.category}
                   </p>
                 </td>
 
-                {/* Large screen fields only */}
-                <td className="border border-gray-300 px-2 py-1 hidden lg:table-cell">
+                <td className="border border-gray-300 px-2 py-1 hidden lg:table-cell break-words">
                   {post.subCategory || "-"}
                 </td>
                 <td className="border border-gray-300 px-2 py-1 hidden lg:table-cell">
                   {post.hit || 0}
                 </td>
-                <td className="border border-gray-300 px-2 py-1 hidden lg:table-cell">
+                <td className="border border-gray-300 px-2 py-1 hidden lg:table-cell break-words">
                   {post.reporter}
                 </td>
                 <td className="border border-gray-300 px-2 py-1 hidden lg:table-cell">
@@ -176,13 +193,22 @@ export default function NewsPostList() {
                   </span>
                 </td>
                 <td className="border border-gray-300 px-1 py-1 hidden lg:table-cell text-center">
-                  <button className="text-green-700 bg-green-100 p-2 border border-green-400 rounded cursor-pointer hover:bg-green-200">
+                  <button
+                    onClick={() => navigate(`/dashboard/edit-post/${post._id}`)}
+                    className="text-green-700 bg-green-100 p-2 border border-green-400 rounded hover:bg-green-200"
+                  >
                     <FaEdit size={17} />
                   </button>
-                  <button className="text-red-500 bg-red-100 p-2 border border-red-400 rounded ml-1 cursor-pointer hover:bg-red-200">
+                  <button
+                    onClick={() => handleDelete(post._id)}
+                    className="text-red-500 bg-red-100 p-2 border border-red-400 rounded ml-1 hover:bg-red-200"
+                  >
                     <RiDeleteBin6Line size={17} />
                   </button>
-                  <button className="text-green-700 bg-green-100 p-2 border border-green-400 rounded ml-1 cursor-pointer hover:bg-green-200">
+                  <button
+                    onClick={() => navigate(`/category/${post._id}`)}
+                    className="text-green-700 bg-green-100 p-2 border border-green-400 rounded ml-1 hover:bg-green-200"
+                  >
                     <FaEye size={17} />
                   </button>
                 </td>
@@ -190,7 +216,7 @@ export default function NewsPostList() {
 
               {/* Expandable Row for Mobile */}
               {expandedRow === post._id && (
-                <tr className="lg:hidden">
+               <tr className="lg:hidden">
                   <td
                     colSpan="4"
                     className="border border-gray-300 py-2 bg-gray-50"
@@ -242,13 +268,24 @@ export default function NewsPostList() {
                       {/* Action */}
                       <div className="flex items-center gap-2 pt-1 ml-2">
                         <span className="font-semibold w-32">Action:</span>
-                        <button className="text-green-700 bg-green-100 p-2 border border-green-400 rounded cursor-pointer hover:bg-green-200">
+                        <button
+                          onClick={() =>
+                            navigate(`/dashboard/edit-post/${post._id}`)
+                          }
+                          className="text-green-700 bg-green-100 p-2 border border-green-400 rounded cursor-pointer hover:bg-green-200"
+                        >
                           <FaEdit size={17} />
                         </button>
-                        <button className="text-red-500 bg-red-100 p-2 border border-red-400 rounded ml-1 cursor-pointer hover:bg-red-200">
+                        <button
+                          onClick={() => handleDelete(post._id)}
+                          className="text-red-500 bg-red-100 p-2 border border-red-400 rounded ml-1 cursor-pointer hover:bg-red-200"
+                        >
                           <RiDeleteBin6Line size={17} />
                         </button>
-                        <button className="text-green-700 bg-green-100 p-2 border border-green-400 rounded ml-1 cursor-pointer hover:bg-green-200">
+                        <button
+                          onClick={() => navigate(`/category/${post._id}`)}
+                          className="text-green-700 bg-green-100 p-2 border border-green-400 rounded ml-1 cursor-pointer hover:bg-green-200"
+                        >
                           <FaEye size={17} />
                         </button>
                       </div>
@@ -265,8 +302,7 @@ export default function NewsPostList() {
       <div className="flex justify-between items-center mt-2">
         <p>
           Showing {indexOfFirst + 1} to{" "}
-          {Math.min(indexOfLast, filteredPosts.length)} of{" "}
-          {filteredPosts.length} entries
+          {Math.min(indexOfLast, filteredPosts.length)} of {filteredPosts.length} entries
         </p>
         <div className="flex items-center gap-1">
           <button
@@ -280,7 +316,7 @@ export default function NewsPostList() {
             <button
               key={num}
               onClick={() => handlePageChange(num)}
-              className={`px-2 py-1  ${
+              className={`px-2 py-1 ${
                 currentPage === num ? "bg-green-700 text-white rounded" : ""
               }`}
             >
