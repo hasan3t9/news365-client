@@ -19,6 +19,9 @@ import DashboardHome from "../Pages/Dashboard/DashHome/DashHome";
 import AddNewsPost from "../Pages/Dashboard/Admin/AddNewsPost";
 import EditNewsPost from "../Pages/Dashboard/Admin/EditNewsPost";
 import NewsPostList from "../Pages/Dashboard/Admin/NewsPostList";
+import Ocr from "../Pages/Dashboard/Admin/Ocr";
+import AddCat from "../Pages/Dashboard/Admin/AddCat";
+import AddLang from "../Pages/Dashboard/Admin/AddLang";
 
 const router = createBrowserRouter([
   {
@@ -94,12 +97,12 @@ const router = createBrowserRouter([
         index: true,
         element: <DashboardHome></DashboardHome>,
       },
-      
+
       {
         path: "/dashboard/add-news-post",
         element: <AddNewsPost></AddNewsPost>,
       },
-     
+
       {
         path: "/dashboard/news-post-list",
         element: <NewsPostList></NewsPostList>,
@@ -107,6 +110,18 @@ const router = createBrowserRouter([
       {
         path: "/dashboard/edit-post/:id",
         element: <EditNewsPost></EditNewsPost>,
+      },
+      {
+        path: "/dashboard/ocr",
+        element: <Ocr></Ocr>,
+      },
+      {
+        path: "/dashboard/add-category",
+        element: <AddCat></AddCat>,
+      },
+      {
+        path: "/dashboard/add-language",
+        element: <AddLang></AddLang>,
       },
     ],
   },

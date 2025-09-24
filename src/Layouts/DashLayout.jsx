@@ -5,11 +5,11 @@ import { AiFillHome } from "react-icons/ai";
 import { BsFileEarmarkText } from "react-icons/bs";
 import { MdArticle } from "react-icons/md";
 import {
+  FaAccusoft,
   FaListAlt,
   FaMoneyCheckAlt,
+  FaPlus,
   FaPlusCircle,
-  
- 
 } from "react-icons/fa";
 
 import useUserRole from "../Hook/useUserRole";
@@ -129,13 +129,12 @@ const DashLayout = () => {
                 <div onClick={() => toggleSection("post")}>
                   <li className="font-bold">
                     <p>
-                      <MdArticle size={20}  /> Post
+                      <MdArticle size={20} /> Post
                     </p>
                   </li>
                 </div>
                 {openSection === "post" && (
                   <ul className="ml-6 mt-2 space-y-1 font-bold  ">
-                   
                     <li>
                       {" "}
                       <NavLink
@@ -148,7 +147,7 @@ const DashLayout = () => {
                         Add News Post
                       </NavLink>
                     </li>
-                   
+
                     <li>
                       {" "}
                       <NavLink
@@ -165,8 +164,18 @@ const DashLayout = () => {
                 )}
               </div>
               <li className="font-bold">
-                <NavLink>
-                  <FaListAlt size={20} /> Users
+                <NavLink to={"/dashboard/ocr"}>
+                  <FaAccusoft /> OCR
+                </NavLink>
+              </li>
+              <li className="font-bold">
+                <NavLink to={"/dashboard/add-category"}>
+                  <FaPlus /> Add category
+                </NavLink>
+              </li>
+              <li className="font-bold">
+                <NavLink to={"/dashboard/add-language"}>
+                  <FaPlus /> Add Language
                 </NavLink>
               </li>
             </>

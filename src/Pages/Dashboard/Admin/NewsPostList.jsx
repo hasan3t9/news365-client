@@ -1,24 +1,36 @@
 import React, { useEffect, useState } from "react";
-import axiosInstance from "../../../Hook/useAxios";
+
 import { FaEdit, FaEye } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  deleteNewsPost,
+  fetchNewsPosts,
+} from "../../../Redux/slices/postSlice";
 
 export default function NewsPostList() {
-  const [posts, setPosts] = useState([]);
+  // const [posts, setPosts] = useState([]);
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [entriesPerPage, setEntriesPerPage] = useState(10);
   const navigate = useNavigate();
 
+  const dispatch = useDispatch();
+  const { data: posts, loading, error } = useSelector((state) => state.posts);
+
   useEffect(() => {
-    axiosInstance.get("/all-news365").then((res) => setPosts(res.data));
-  }, []);
+    dispatch(fetchNewsPosts());
+  }, [dispatch]);
+
+
+  // useEffect(() => {
+  //   axiosInstance.get("/all-news365").then((res) => setPosts(res.data));
+  // }, []);
 
   const [expandedRow, setExpandedRow] = useState(null);
-  const toggleExpand = (id) =>
-    setExpandedRow(expandedRow === id ? null : id);
+  const toggleExpand = (id) => setExpandedRow(expandedRow === id ? null : id);
 
   const filteredPosts = posts.filter((post) =>
     post.headLine?.toLowerCase().includes(search.toLowerCase())
@@ -44,17 +56,25 @@ export default function NewsPostList() {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        axiosInstance
-          .delete(`/all-news365/${id}`)
+        dispatch(deleteNewsPost(id))
+          .unwrap()
           .then(() => {
             Swal.fire("Deleted!", "Your data has been deleted.", "success");
-            setPosts((prev) => prev.filter((p) => p._id !== id));
           })
           .catch(() => Swal.fire("Error!", "Something went wrong.", "error"));
+        // axiosInstance
+        //   .delete(`/all-news365/${id}`)
+        //   .then(() => {
+        //     Swal.fire("Deleted!", "Your data has been deleted.", "success");
+        //     setPosts((prev) => prev.filter((p) => p._id !== id));
+        //   })
+        //   .catch(() => Swal.fire("Error!", "Something went wrong.", "error"));
       }
     });
   };
 
+  if (loading) return <p>Loading posts...</p>;
+  if (error) return <p className="text-red-500">Error: {error}</p>;
   return (
     <div className="overflow-x-auto lg:p-4">
       <h1 className="font-bold text-2xl mb-10">Post List</h1>
@@ -216,7 +236,7 @@ export default function NewsPostList() {
 
               {/* Expandable Row for Mobile */}
               {expandedRow === post._id && (
-               <tr className="lg:hidden">
+                <tr className="lg:hidden">
                   <td
                     colSpan="4"
                     className="border border-gray-300 py-2 bg-gray-50"
@@ -302,7 +322,8 @@ export default function NewsPostList() {
       <div className="flex justify-between items-center mt-2">
         <p>
           Showing {indexOfFirst + 1} to{" "}
-          {Math.min(indexOfLast, filteredPosts.length)} of {filteredPosts.length} entries
+          {Math.min(indexOfLast, filteredPosts.length)} of{" "}
+          {filteredPosts.length} entries
         </p>
         <div className="flex items-center gap-1">
           <button

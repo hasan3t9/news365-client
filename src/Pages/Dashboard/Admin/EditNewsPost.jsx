@@ -3,16 +3,21 @@ import { useParams, useNavigate } from "react-router";
 import axiosInstance from "../../../Hook/useAxios";
 import { CKEditor } from "ckeditor4-react";
 import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { updateNewsPost } from "../../../Redux/slices/postSlice";
 
 export default function EditNewsPost() {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  const dispatch = useDispatch();
+  const { loading, error } = useSelector((state) => state.posts);
+
   const [details, setDetails] = useState("");
   const [categories, setCategories] = useState([]);
   const [loadingImage, setLoadingImage] = useState(false);
   const [reporters, setReporters] = useState([]);
-const baseURL = "http://localhost:3000";
+  const baseURL = "http://localhost:3000";
   const [formData, setFormData] = useState({
     language: "",
     category: "",
@@ -145,22 +150,28 @@ const baseURL = "http://localhost:3000";
   };
 
   // handle submit
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const { _id, ...rest } = formData;
-    const payload = { ...rest, details };
+    const payload = { id, postData: { ...rest, details } };
 
-    axiosInstance
-      .put(`/update-news/${id}`, payload)
-      .then(() => {
+    try {
+      const resultAction = await dispatch(updateNewsPost(payload));
+
+      if (updateNewsPost.fulfilled.match(resultAction)) {
         toast.success("Post Updated Successfully");
         navigate("/dashboard/news-post-list");
-      })
-      .catch((err) => {
-        console.error("Update error:", err);
-        toast.error("Failed to update post");
-      });
+      } else {
+        toast.error(resultAction.payload || "Failed to update post");
+      }
+    } catch (err) {
+      console.error("Update error:", err);
+      toast.error("Failed to update post");
+    }
   };
+  if (error) {
+    return <div>{error}</div>;
+  }
 
   return (
     <div className="p-6 lg:mx-16 mx-auto">
@@ -392,12 +403,11 @@ const baseURL = "http://localhost:3000";
               {reporters.map((rep) => (
                 <option key={rep._id} value={rep.reporterName}>
                   <img
-                      className="w-7 h-7 rounded-full"
-                      src={`${baseURL}${rep?.image?.original}`}
-                      alt={rep?.reporterName}
-                    />
+                    className="w-7 h-7 rounded-full"
+                    src={`${baseURL}${rep?.image?.original}`}
+                    alt={rep?.reporterName}
+                  />
                   {rep.reporterName}{" "}
-                  
                 </option>
               ))}
             </select>
@@ -483,8 +493,8 @@ const baseURL = "http://localhost:3000";
 
         {/* Save Button */}
         <div>
-          <button type="submit" className="btn btn-success">
-            Update Post
+          <button type="submit" disabled={loading} className="btn btn-success">
+            {loading ? "Updating" : "Upadate"}
           </button>
         </div>
       </form>

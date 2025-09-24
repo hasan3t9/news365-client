@@ -8,6 +8,7 @@ export default function AddNewsPost() {
   const [categories, setCategories] = useState([]);
   const [loadingImage, setLoadingImage] = useState(false);
   const [reporters, setReporters] = useState([]);
+  const [languages, setLanguages] = useState([]);
   const baseURL = "http://localhost:3000";
   const today = new Date().toISOString().split("T")[0];
 
@@ -143,6 +144,7 @@ export default function AddNewsPost() {
       setCategories(res.data);
     });
     axiosInstance.get("/reporters").then((res) => setReporters(res.data));
+    axiosInstance.get("/languages").then((res) => setLanguages(res.data));
   }, []);
 
   // Submit News
@@ -200,9 +202,11 @@ export default function AddNewsPost() {
               className="select select-bordered w-full"
             >
               <option value="">Select Language</option>
-              <option value="English">English</option>
-              <option value="Bangla">Bangla</option>
-              <option value="Arabic">Arabic</option>
+              {languages.map((lang) => (
+                <option key={lang?._id} value={lang?.name}>
+                  {lang?.name}
+                </option>
+              ))}
             </select>
           </div>
           <div>
@@ -279,7 +283,6 @@ export default function AddNewsPost() {
             <input
               type="date"
               name="releaseDate"
-             
               value={formData.releaseDate}
               onChange={handleChange}
               className="input input-bordered w-full"
@@ -483,7 +486,7 @@ export default function AddNewsPost() {
         </div>
 
         {/* Checkboxes */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4">
           {[
             "latestPost",
             "breakingPost",
@@ -507,7 +510,7 @@ export default function AddNewsPost() {
         </div>
 
         <div>
-          <button type="submit" className="btn btn-success">
+          <button type="submit" className="btn px-5 font-bold btn-primary">
             Save
           </button>
         </div>

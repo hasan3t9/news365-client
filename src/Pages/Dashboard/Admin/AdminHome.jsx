@@ -37,31 +37,31 @@ const AdminHome = () => {
     <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">
       <StatCard
         title="Total Posts"
-        value={stats.totalPosts}
+        value={stats?.totalPosts}
         bg="#9d7ee730"
         icon={<FaRegNewspaper size={80} className="text-blue-600" />}
       />
       <StatCard
         title="Trending Posts"
-        value={stats.totalTrending}
+        value={stats?.totalTrending}
         bg="#E8EBED"
         icon={<FaFire size={80} className="text-red-500" />}
       />
       <StatCard
         title="Today's Picks"
-        value={stats.totalTodayPick}
+        value={stats?.totalTodayPick}
         bg="#CCF8FE"
         icon={<FaCalendarDay size={80} className="text-green-500" />}
       />
       <StatCard
         title="Total Views"
-        value={stats.totalViews}
+        value={stats?.totalViews}
         bg="#DCFCE7"
         icon={<FaEye size={80} className="text-purple-600" />}
       />
       <StatCard
         title="Total Users"
-        value={stats.totalUsers}
+        value={stats?.totalUsers}
         bg="#E8FCCF"
         icon={<FaUsers size={80} className="text-teal-600" />}
       />
